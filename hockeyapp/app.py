@@ -177,6 +177,33 @@ class Application(api.APIRequest):
                            response.get('current_page', 0),
                            response.get('per_page', 0))
 
+    def crash_group_search(self, version_id=None, offset=1,
+                     limit=25, query=''):
+        """Search all crashes grouped by reason for an app. If version_id is
+        specified, return all of the crash groupings for that version.
+
+        :param str version_id: An optional version number to restrict groups to
+        :param bool symbolicated: run crashes through the symbolication process
+        :param int offset: The offset for the page of feedback
+        :param str query: Query string
+        :rtype: Feedback
+
+        """
+        parts = ['apps', self._app_id, 'crash_reasons', 'search']
+        if version_id:
+            parts = ['apps', self._app_id,
+                     'app_versions', str(version_id),
+                     'crash_reasons']
+        response = self._get(uri_parts=parts,
+                             data={'page': offset,
+                                   'per_page': limit,
+                                   'query': query})
+        return CrashGroups(response.get('crash_reasons', []),
+                           response.get('total_entries', 0),
+                           response.get('total_pages', 0),
+                           response.get('current_page', 0),
+                           response.get('per_page', 0))
+
     def crashes(self, reason_id, offset=0, limit=25):
         """Paginated list of crashes in a crash reason group.
 
