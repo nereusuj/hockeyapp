@@ -88,7 +88,7 @@ class APIRequest(object):
         LOGGER.debug('Performing HTTP GET to %s', uri)
         return self._response(requests.get(uri,
                                            headers=self.headers,
-                                           data=data))
+                                           param=data))
 
     def _post(self, uri_parts=None, data=None, files=None):
         """Get data from the API
