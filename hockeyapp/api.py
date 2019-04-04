@@ -114,6 +114,7 @@ class APIRequest(object):
         :raise: hockeyapp.app.APIError
 
         """
+        LOGGER.debug('Request uri: %s', response.url)
         LOGGER.debug('Response status code: %s', response.status_code)
         LOGGER.debug('Headers: %r', response.headers)
         if 200 <= response.status_code <= 300:
